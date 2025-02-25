@@ -30,10 +30,10 @@ export const LogoLink = styled.a`
 export const InfoArea = styled.div`
   width: 100%;
   margin: 10px 0;
-    @media (max-width: 750px) {
-   display: flex;
-   justify-content: space-around;
-   text-align: center
+  @media (max-width: 750px) {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
   }
 `;
 
@@ -41,14 +41,19 @@ export const GridArea = styled.div`
   flex: 1;
   display: flex;
   justify-content: flex-end;
-    min-height: 50px;
+  min-height: 50px;
 
-
-    @media (max-width: 750px) {
+  @media (max-width: 750px) {
     justify-content: center;
     margin: 20px auto;
-      width: 100%;
-      align-itemns: center;
-
+    width: 100%;
+    align-itemns: center;
   }
+`;
+
+export const Grid = styled.div`
+  width: 430px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 `;
