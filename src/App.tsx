@@ -61,7 +61,7 @@ const App = () => {
   };
 
   const handleItemClick = (index: number) => {
-    // Função para lidar com o clique nos itens
+    // função para lidar com o clique nos itens
   };
 
   return (
