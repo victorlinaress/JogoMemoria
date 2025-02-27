@@ -26,27 +26,58 @@ const App = () => {
     return () => clearInterval(timer);
   }, [playing, timeElapsed]);
 
-  // verificar se está aberto
+  // se está certo os pares, deixar eles permanentes
   useEffect(() => {
-    if (showCount === 2) {// vai virar 2 cartas
-      let opened = gridItems.filter((item) => item.shown === true);// filtra as cartas que estão visíveis no momento
-      if (opened.length === 2) { //se for 2 cartas
-        // se ambos estão abertos, deixe o "show" permanente
+    if (showCount === 2) {
+      // vai virar 2 cartas
+      let opened = gridItems.filter((item) => item.shown === true); // filtra as cartas que estão visíveis no momento
+      if (opened.length === 2) {
+        setMoveCount (moveCount => moveCount + 1);
 
-        if (opened[0].item === opened[1].item) { //verificar se a carta 1 e as 2 são parecidas
-          let tpmGrid = [...gridItems];// vai copiar os items atuais
-          for (let i in tpmGrid) {// um for para passar pelos intems
-            if (tpmGrid[i].shown) {//se mostrar a carta
-              tpmGrid[i].permanentShown = true;//ela vai permanecer virada
-              tpmGrid[i].shown = false;// e não tem como virar mais ela
+        // se for 2 cartas
+        // se ambos estão abertos, deixe o "show" permanente
+        let tpmGrid = [...gridItems]; // vai copiar os items atuais
+
+        if (opened[0].item === opened[1].item) {
+          // verificar se a carta 1 e a 2 são iguais (par correto)
+          for (let i in tpmGrid) {
+            // um for para passar pelos itens
+            if (tpmGrid[i].shown) {
+              // se mostrar a carta
+              tpmGrid[i].permanentShown = true; // ela vai permanecer virada
+              tpmGrid[i].shown = false; // e não tem como virar mais ela
             }
           }
-          setGridItems(tpmGrid);//passando a atualizacao
-          setShowCount(0);//resetar as cartas
+        } else {
+          // se não estiver certo, fechar para esconder novamente
+          setTimeout(() => {
+            let tmpGrip = [...gridItems];
+            for (let i in tpmGrid) {
+              if (tpmGrid[i].shown) {
+                tpmGrid[i].shown = false;
+              }
+            }
+            setGridItems(tpmGrid); // passando a atualização
+            setShowCount(0); // resetar as cartas
+          }, 1000); // espera 1 segundo antes de virar as cartas
+          return; // sai do useEffect para esperar o setTimeout
         }
+
+
+        setGridItems(tpmGrid); // passando a atualização
+        setShowCount(0); // resetar as cartas
       }
     }
   }, [showCount, gridItems]);
+
+  //verificar se o jogo acabou
+
+  useEffect (() => {
+    if (moveCount > 0 && gridItems.every(item => item.permanentShown === true)) {
+      setPlaying(false)
+    }
+
+  },[moveCount,gridItems])
 
   const resetAndCreateGrid = () => {
     // Step 1 - reset the game
@@ -115,7 +146,7 @@ const App = () => {
 
         <C.InfoArea>
           <InfoItem label="Tempo" value={formartTimeElapsed(timeElapsed)} />
-          <InfoItem label="Movimentos" value="0" />
+          <InfoItem label="Movimentos" value={moveCount.toString()} />
         </C.InfoArea>
 
         <Button
