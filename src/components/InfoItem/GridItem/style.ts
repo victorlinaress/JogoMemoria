@@ -21,7 +21,7 @@ type IconProps = {
 };
 
 export const Icon = styled.img<IconProps>`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 80px;
   opacity: ${(props) => props.opacity ?? 1};
 `;
